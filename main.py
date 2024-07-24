@@ -42,10 +42,15 @@ async def stream():
                 hx_swap = False
                 message = ""
 
+                thinking_message = """data: <li class="text-white p-4 m-2 shadow-md rounded bg-gray-800 text-sm" id="{current_response_id}">thinking...</li>\n\n"""
+                yield thinking_message
+                
+                message = ""
                 for word in caller(user_message, sess_id):
                     try:
                         message += word.replace("\n", "<br>")
                         ai_message = f"<p><strong>{AI_NAME}</strong> : {message}</p>"
+
                         res = f"""data: <li class="text-white p-4 m-2 shadow-md rounded bg-gray-800 text-sm" id="{current_response_id}" {"hx-swap-oob='true'" if hx_swap else ""}>{ai_message}</li>\n\n"""
                         hx_swap = True
 
